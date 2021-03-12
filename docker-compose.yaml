@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo:3.6
+    container_name: mongo-container
+    restart: always
+    ports:
+      - "27017:27017"
+  server:
+    env_file:
+      - .env
+    build:
+      context: .
+    container_name: node-container
+    restart: always
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - mongo
