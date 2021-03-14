@@ -4,6 +4,7 @@ import FarmListServiceV1 from '../../services/v1/farmList'
 import FarmFindByIdServiceV1 from '../../services/v1/farmFindById'
 import FarmUpdateServiceV1 from '../../services/v1/farmUpdate'
 import FarmUpdateNDVIFromCSVServiceV1 from '../../services/v1/farmUpdateNDVIFromCSV'
+import FarmUpdatePrecipitationFromCSVServiceV1 from '../../services/v1/farmUpdatePrecipitationFromCSV'
 import FarmDeleteServiceV1 from '../../services/v1/farmDelete'
 import BaseController from '../base'
 
@@ -101,6 +102,16 @@ class FarmControllerV1 extends BaseController {
     const { file } = req
 
     const service = new FarmUpdateNDVIFromCSVServiceV1({ file })
+
+    await service.execute()
+
+    this.responseServiceHandler(res, service)
+  }
+
+  async updatePrecipitationFromCSV(req, res) {
+    const { file } = req
+
+    const service = new FarmUpdatePrecipitationFromCSVServiceV1({ file })
 
     await service.execute()
 

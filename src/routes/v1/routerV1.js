@@ -35,6 +35,11 @@ routerV1.patch(
   files.uploadMiddleware.single('file'),
   farmControllerV1.updateNDVIFromCSV.bind(farmControllerV1)
 )
+routerV1.patch(
+  '/farms/precipitation/csv',
+  files.uploadMiddleware.single('file'),
+  farmControllerV1.updatePrecipitationFromCSV.bind(farmControllerV1)
+)
 routerV1.delete('/farms/:id', farmControllerV1.destroy.bind(farmControllerV1))
 
 export default routerV1

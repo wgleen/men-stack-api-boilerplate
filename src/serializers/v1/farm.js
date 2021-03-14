@@ -10,7 +10,9 @@ const farmSerializerV1 = ({ farm }) => {
       variety: farm.variety,
       totalArea: farm.totalArea,
       yieldEstimation: farm.yieldEstimation,
-      price: farm.price
+      price: farm.price,
+      ndvi: farm.ndvi,
+      precipitation: farm.precipitation
     }
   }
 }

@@ -4,7 +4,7 @@ class FarmUpdateNDVIFromCSVServiceV1 extends FarmUpdateFromCSV {
   constructor(params) {
     super(params)
 
-    this.identifier = 'ndvi'
+    this.identifier = 'precipitation'
   }
 
   async execute() {

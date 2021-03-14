@@ -15,43 +15,43 @@ class FarmCreateFromCSVServiceV1 extends BaseService {
   async execute() {
     const { file } = this.params
 
-    const data = await files.readCSV(file.buffer)
-
-    const farms = await Promise.all(
-      data.map(async (item) => {
-        const {
-          farm_id,
-          name,
-          latitude,
-          longitude,
-          culture,
-          variety,
-          total_area,
-          yield_estimation,
-          price
-        } = item
-
-        const service = new FarmCreateServiceV1({
-          id: farm_id,
-          name,
-          latitude,
-          longitude,
-          culture,
-          variety,
-          totalArea: total_area,
-          yieldEstimation: yield_estimation,
-          price
-        })
-
-        await service.execute()
-
-        if (service.isFail()) throw service.error
-
-        return service.data.farm
-      })
-    )
-
     try {
+      const data = await files.readCSV(file.buffer)
+
+      const farms = await Promise.all(
+        data.map(async (item) => {
+          const {
+            farm_id,
+            name,
+            latitude,
+            longitude,
+            culture,
+            variety,
+            total_area,
+            yield_estimation,
+            price
+          } = item
+
+          const service = new FarmCreateServiceV1({
+            id: farm_id,
+            name,
+            latitude,
+            longitude,
+            culture,
+            variety,
+            totalArea: total_area,
+            yieldEstimation: yield_estimation,
+            price
+          })
+
+          await service.execute()
+
+          if (service.isFail()) throw service.error
+
+          return service.data.farm
+        })
+      )
+
       this.addSuccessResponse({ farms })
     } catch (err) {
       this.addErrorResponse(err)
