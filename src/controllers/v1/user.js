@@ -9,11 +9,7 @@ class UserControllerV1 extends BaseController {
 
     await service.execute()
 
-    if (service.isSuccess()) {
-      this.responseSuccessHandler(res, service.status, service.data)
-    } else {
-      this.responseErrorHandler(res, service.status, service.error)
-    }
+    this.responseServiceHandler(res, service)
   }
 }
 

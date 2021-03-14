@@ -39,9 +39,7 @@ class FarmCreateServiceV1 extends BaseService {
     try {
       await farm.save()
 
-      this.addSuccessResponse({
-        farm
-      })
+      this.addSuccessResponse({ farm })
     } catch (err) {
       this.addErrorResponse(err)
     }

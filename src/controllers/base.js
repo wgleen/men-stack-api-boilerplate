@@ -23,6 +23,14 @@ class BaseController {
 
     return errorsSerializer
   }
+
+  responseServiceHandler(res, service) {
+    if (service.isSuccess()) {
+      this.responseSuccessHandler(res, service.status, service.data)
+    } else {
+      this.responseErrorHandler(res, service.status, service.error)
+    }
+  }
 }
 
 export default BaseController
