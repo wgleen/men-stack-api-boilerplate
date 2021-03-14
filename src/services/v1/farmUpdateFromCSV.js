@@ -70,7 +70,9 @@ class FarmUpdateFromCSVServiceV1 extends BaseService {
 
         normalizedData[currentFarmSerializedIndex][this.identifier].push({
           date: item.date,
-          value: FarmUpdateFromCSVServiceV1.parseValueToFloat(item[farmIdUnformated])
+          value: FarmUpdateFromCSVServiceV1.parseValueToFloat(
+            item[farmIdUnformated]
+          )
         })
       })
     })
