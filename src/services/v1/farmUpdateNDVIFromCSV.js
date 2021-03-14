@@ -1,6 +1,6 @@
-import FarmUpdateFromCSV from './FarmUpdateFromCSV'
+import FarmUpdateFromCSVServiceV1 from './FarmUpdateFromCSV'
 
-class FarmUpdateNDVIFromCSVServiceV1 extends FarmUpdateFromCSV {
+class FarmUpdateNDVIFromCSVServiceV1 extends FarmUpdateFromCSVServiceV1 {
   constructor(params) {
     super(params)
 

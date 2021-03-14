@@ -3,7 +3,7 @@ import Farm from '../../models/farm'
 import farmListSerializerV1 from '../../serializers/v1/farmList'
 import * as files from '../../lib/files'
 
-class FarmUpdateFromCSV extends BaseService {
+class FarmUpdateFromCSVServiceV1 extends BaseService {
   constructor(params) {
     super({
       serializer: farmListSerializerV1
@@ -70,7 +70,7 @@ class FarmUpdateFromCSV extends BaseService {
 
         normalizedData[currentFarmSerializedIndex][this.identifier].push({
           date: item.date,
-          value: FarmUpdateFromCSV.parseValueToFloat(item[farmIdUnformated])
+          value: FarmUpdateFromCSVServiceV1.parseValueToFloat(item[farmIdUnformated])
         })
       })
     })
@@ -79,4 +79,4 @@ class FarmUpdateFromCSV extends BaseService {
   }
 }
 
-export default FarmUpdateFromCSV
+export default FarmUpdateFromCSVServiceV1
