@@ -1,6 +1,7 @@
 import Express from 'express'
 import UserCreateServiceV1 from '../../services/v1/userCreate'
 import BaseController from '../base'
+import UserSerializerV1 from '../../serializers/v1/user'
 
 export interface ICreateBody {
   username: string
@@ -20,7 +21,7 @@ class UserControllerV1 extends BaseController {
 
     await service.execute()
 
-    this.responseServiceHandler(res, service)
+    this.responseServiceHandler(res, service, UserSerializerV1)
   }
 }
 
