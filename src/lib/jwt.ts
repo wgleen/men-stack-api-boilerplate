@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import config from '../config'
-import * as errors from './errors'
+import UnauthorizedError from '../exceptions/errors/unauthorizedError'
 
 export const generateToken = (data: Record<string, unknown>): string => {
   return jwt.sign(data, config.jwt.secret, {
@@ -19,7 +19,7 @@ export const verifyToken = async (token: string): Promise<IDecoded> => {
 
     return <IDecoded>decoded
   } catch (err) {
-    throw new errors.UnauthorizedError()
+    throw new UnauthorizedError()
   }
 }
 

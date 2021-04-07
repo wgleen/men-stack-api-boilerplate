@@ -13,42 +13,52 @@ export interface IError {
 }
 
 export class BaseError implements IError {
-  name = BaseError.name
+  name: string
   message = 'Base error'
   status = 500
   code = 500
 
   constructor(message?: string) {
+    this.name = this.constructor.name
+
     if (message) this.message = message
   }
 }
 
 export class ParamsError extends BaseError {
-  name = ParamsError.name
-  message = 'Params required'
-  status = 400
-  code = 400
+  constructor(message?: string) {
+    super(message || 'Params required')
+
+    this.status = 400
+    this.code = 400
+  }
 }
 
 export class InternalServerError extends BaseError {
-  name = InternalServerError.name
-  message = 'Internal server error'
-  status = 500
-  code = 500
+  constructor(message?: string) {
+    super(message || 'Internal server error')
+
+    this.status = 500
+    this.code = 500
+  }
 }
 
 export class NotFoundError extends BaseError {
-  name = NotFoundError.name
-  message = 'Resource not found'
-  status = 404
-  code = 404
+  constructor(message?: string) {
+    super(message || 'Resource not found')
+
+    this.status = 404
+    this.code = 404
+  }
 }
 
 export class UnauthorizedError extends BaseError {
-  name = UnauthorizedError.name
-  message = 'Unauthorized to access the resource'
-  status = 401
-  code = 401
+  constructor(message?: string) {
+    super(message || 'Unauthorized to access the resource')
+
+    this.status = 401
+    this.code = 401
+  }
 }
 
 export class MongoError extends BaseError {
@@ -56,13 +66,11 @@ export class MongoError extends BaseError {
     DUPLICATE_KEY_ERROR: 11000
   }
 
-  name = MongoError.name
-  message = 'Mongo error'
-  status = 500
-  code = 500
-
   constructor(err: IError) {
-    super()
+    super('Mongo error')
+
+    this.status = 500
+    this.code = 500
 
     this.setError(err)
   }
@@ -80,10 +88,6 @@ export class MongoError extends BaseError {
 }
 
 export class ValidationError extends BaseError {
-  name = ValidationError.name
-  message
-  code = 400
-  status = 400
   meta: {
     properties: (mongoose.Error.ValidatorError | mongoose.Error.CastError)[]
   } = {
@@ -91,9 +95,11 @@ export class ValidationError extends BaseError {
   }
 
   constructor(err: IError) {
-    super()
+    super(err.message)
 
-    this.message = err.message
+    this.code = 400
+    this.status = 400
+
     this.setProperties(err)
   }
 

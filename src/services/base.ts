@@ -1,4 +1,5 @@
-import ErrorHandler, { IError } from '../lib/errors'
+import ExceptionHandler from '../exceptions/handler'
+import { IError } from '../exceptions/types'
 
 class BaseService<IParams, IData> {
   success = false
@@ -42,11 +43,11 @@ class BaseService<IParams, IData> {
   setErrorResponse(err: IError): void {
     this.success = false
 
-    const errorHandler = new ErrorHandler(err)
+    const exceptionHandler = new ExceptionHandler(err)
 
-    this.status = errorHandler.error.status
+    this.status = exceptionHandler.error.status
 
-    this.setError(errorHandler.error)
+    this.setError(exceptionHandler.error)
   }
 }
 

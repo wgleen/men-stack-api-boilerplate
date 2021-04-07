@@ -1,4 +1,4 @@
-import * as errors from '../../lib/errors'
+import ParamsError from '../../exceptions/errors/paramsError'
 import BaseService from '../base'
 import Farm from '../../models/farm'
 
@@ -9,7 +9,7 @@ export interface IParams {
 class FarmDeleteServiceV1 extends BaseService<IParams, undefined> {
   async execute(): Promise<void> {
     if (!this.params) {
-      this.setErrorResponse(new errors.ParamsError())
+      this.setErrorResponse(new ParamsError())
 
       return
     }

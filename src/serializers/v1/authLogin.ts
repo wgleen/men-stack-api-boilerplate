@@ -13,11 +13,15 @@ export interface IDataSerialized {
 }
 
 class AuthLoginSerializerV1 extends BaseSerializer<IData, IDataSerialized> {
-  serializer(): IDataSerialized {
+  serializer(): IDataSerialized | undefined {
     const userSerializerV1 = new UserSerializerV1({ user: this.data.user })
 
+    const dataSerialized = userSerializerV1.serialize()
+
+    if (userSerializerV1.isFail() || !dataSerialized) return
+
     return {
-      user: userSerializerV1.serialize().user,
+      user: dataSerialized.user,
       token: this.data.token
     }
   }

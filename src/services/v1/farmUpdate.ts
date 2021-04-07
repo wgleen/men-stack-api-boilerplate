@@ -1,6 +1,7 @@
 import BaseService from '../base'
 import Farm, { IFarm } from '../../models/farm'
-import * as errors from '../../lib/errors'
+import ParamsError from '../../exceptions/errors/paramsError'
+import NotFoundError from '../../exceptions/errors/notFoundError'
 
 export interface IParams {
   id: number
@@ -21,7 +22,7 @@ export interface IData {
 class FarmUpdateServiceV1 extends BaseService<IParams, IData> {
   async execute(): Promise<void> {
     if (!this.params) {
-      this.setErrorResponse(new errors.ParamsError())
+      this.setErrorResponse(new ParamsError())
 
       return
     }
@@ -55,7 +56,7 @@ class FarmUpdateServiceV1 extends BaseService<IParams, IData> {
       )
 
       if (!farm) {
-        return this.setErrorResponse(new errors.NotFoundError())
+        return this.setErrorResponse(new NotFoundError())
       }
 
       this.setSuccessResponse({

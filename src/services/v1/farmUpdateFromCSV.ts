@@ -1,5 +1,6 @@
 import * as files from '../../lib/files'
-import * as errors from '../../lib/errors'
+import ParamsError from '../../exceptions/errors/paramsError'
+import InternalServerError from '../../exceptions/errors/internalServerError'
 import BaseService from '../base'
 import Farm, { IFarm, IFarmDocument, IFarmStatistics } from '../../models/farm'
 
@@ -38,7 +39,7 @@ class FarmUpdateFromCSVServiceV1 extends BaseService<IParams, IData> {
 
   async updateFromCSV(): Promise<IFarm[]> {
     if (!this.params) {
-      throw new errors.ParamsError()
+      throw new ParamsError()
     }
 
     const { file } = this.params
@@ -71,7 +72,7 @@ class FarmUpdateFromCSVServiceV1 extends BaseService<IParams, IData> {
     try {
       const farms = await this.updateFromCSV()
 
-      if (!farms) this.setErrorResponse(new errors.InternalServerError())
+      if (!farms) this.setErrorResponse(new InternalServerError())
 
       this.setSuccessResponse({ farms })
     } catch (err) {

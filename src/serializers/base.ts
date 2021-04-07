@@ -1,8 +1,12 @@
-import { InternalServerError } from '../lib/errors'
+import ExceptionHandler from '../exceptions/handler'
+import { IError } from '../exceptions/types'
+import InternalServerError from '../exceptions/errors/internalServerError'
 
 class BaseSerializer<IData, IDataSerialized> {
+  private _success = false
   private _data: IData
-  private _serialized?: IDataSerialized
+  error?: IError
+  private _serialized?: IDataSerialized | void
 
   get data(): IData {
     return this._data
@@ -16,16 +20,42 @@ class BaseSerializer<IData, IDataSerialized> {
     return this._data
   }
 
-  serialize(): IDataSerialized {
+  serialize(): IDataSerialized | void {
     if (!this._serialized) {
       this._serialized = this.serializer()
+    }
+
+    if (this._serialized && !this.error) {
+      this._success = true
     }
 
     return this._serialized
   }
 
-  serializer(): IDataSerialized {
-    throw new InternalServerError('You should create serializer method')
+  serializer(): void {
+    this.setError(
+      new InternalServerError('You should create serializer method')
+    )
+  }
+
+  isValid(): boolean {
+    return !this.error
+  }
+
+  isSuccess(): boolean {
+    return this._success && this.isValid()
+  }
+
+  isFail(): boolean {
+    return !this.isSuccess()
+  }
+
+  setError(err: IError): void {
+    this._success = false
+
+    const exceptionHandler = new ExceptionHandler(err)
+
+    this.error = exceptionHandler.error
   }
 }
 

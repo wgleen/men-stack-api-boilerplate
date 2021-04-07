@@ -1,9 +1,12 @@
 import Express from 'express'
-import ErrorHandler, { IError } from '../lib/errors'
+import ExceptionHandler from '../exceptions/handler'
+import { IError } from '../exceptions/types'
+
+export type IResponseType = 'data' | 'error'
 
 class BaseController {
   responseHandler(
-    type: 'data' | 'error',
+    type: IResponseType,
     res: Express.Response,
     status: number,
     data?: Record<string, unknown> | IError | undefined
@@ -21,14 +24,22 @@ class BaseController {
     Serializer?: any
   ): void {
     let responseData = data
+    let responseStatus = status
+    let type: IResponseType = 'data'
 
     if (Serializer) {
       const serializer = new Serializer(data)
 
       responseData = serializer.serialize()
+
+      if (serializer.isFail()) {
+        responseData = serializer.error
+        type = 'error'
+        responseStatus = serializer.error.status
+      }
     }
 
-    this.responseHandler('data', res, status, responseData)
+    this.responseHandler(type, res, responseStatus, responseData)
   }
 
   responseErrorHandler(
@@ -40,12 +51,16 @@ class BaseController {
   }
 
   responseErrorSerialized(err: IError): IError {
-    const errorHandler = new ErrorHandler(err)
+    const exceptionHandler = new ExceptionHandler(err)
 
-    return errorHandler.error
+    return exceptionHandler.error
   }
 
-  responseServiceHandler(res: Express.Response, service: any, Serializer?: any): void {
+  responseServiceHandler(
+    res: Express.Response,
+    service: any,
+    Serializer?: any
+  ): void {
     if (service.isSuccess()) {
       this.responseSuccessHandler(res, service.status, service.data, Serializer)
     } else if (service.error) {

@@ -1,7 +1,8 @@
 import BaseService from '../base'
 import UserFindByEmailServiceV1 from './userFindByEmail'
 import * as jwt from '../../lib/jwt'
-import * as errors from '../../lib/errors'
+import ParamsError from '../../exceptions/errors/paramsError'
+import UnauthorizedError from '../../exceptions/errors/unauthorizedError'
 import { IUser } from '../../models/user'
 
 export interface IParams {
@@ -15,7 +16,7 @@ export interface IData {
 class AuthAuthenticationServiceV1 extends BaseService<IParams, IData> {
   async execute(): Promise<void> {
     if (!this.params) {
-      this.setErrorResponse(new errors.ParamsError())
+      this.setErrorResponse(new ParamsError())
 
       return
     }
@@ -26,7 +27,7 @@ class AuthAuthenticationServiceV1 extends BaseService<IParams, IData> {
       const decoded = await jwt.verifyToken(token)
 
       if (!decoded || !decoded.email) {
-        this.setErrorResponse(new errors.UnauthorizedError())
+        this.setErrorResponse(new UnauthorizedError())
 
         return
       }
@@ -38,7 +39,7 @@ class AuthAuthenticationServiceV1 extends BaseService<IParams, IData> {
       if (service.isSuccess()) {
         this.setSuccessResponse(service.data, service.status)
       } else {
-        this.setErrorResponse(new errors.UnauthorizedError())
+        this.setErrorResponse(new UnauthorizedError())
       }
     } catch (err) {
       this.setErrorResponse(err)

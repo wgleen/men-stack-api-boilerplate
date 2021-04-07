@@ -1,6 +1,7 @@
 import BaseService from '../base'
 import User, { IUser } from '../../models/user'
-import * as errors from '../../lib/errors'
+import ParamsError from '../../exceptions/errors/paramsError'
+import NotFoundError from '../../exceptions/errors/notFoundError'
 
 export type IParams = {
   email: string
@@ -13,7 +14,7 @@ export type IData = {
 class UserFindByEmailV1 extends BaseService<IParams, IData> {
   async execute(): Promise<void> {
     if (!this.params) {
-      this.setErrorResponse(new errors.ParamsError())
+      this.setErrorResponse(new ParamsError())
 
       return
     }
@@ -24,7 +25,7 @@ class UserFindByEmailV1 extends BaseService<IParams, IData> {
       const user: IUser = await User.findOne({ email }).exec()
 
       if (!user) {
-        this.setErrorResponse(new errors.NotFoundError())
+        this.setErrorResponse(new NotFoundError())
 
         return
       }

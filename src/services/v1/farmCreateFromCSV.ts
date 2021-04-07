@@ -1,5 +1,5 @@
 import * as files from '../../lib/files'
-import * as errors from '../../lib/errors'
+import ParamsError from '../../exceptions/errors/paramsError'
 import { IFarm } from '../../models/farm'
 import BaseService from '../base'
 import FarmCreateServiceV1 from './farmCreate'
@@ -15,7 +15,7 @@ export interface IData {
 class FarmCreateFromCSVServiceV1 extends BaseService<IParams, IData> {
   async execute(): Promise<void> {
     if (!this.params) {
-      this.setErrorResponse(new errors.ParamsError())
+      this.setErrorResponse(new ParamsError())
 
       return
     }

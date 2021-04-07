@@ -1,7 +1,8 @@
 import BaseService from '../base'
 import User, { IUser, IUserDocument } from '../../models/user'
 import * as hash from '../../lib/hash'
-import * as errors from '../../lib/errors'
+import ParamsError from '../../exceptions/errors/paramsError'
+import InternalServerError from '../../exceptions/errors/internalServerError'
 
 export interface IParams {
   username: string
@@ -16,7 +17,7 @@ export interface IData {
 class UserCreateServiceV1 extends BaseService<IParams, IData> {
   async execute(): Promise<void> {
     if (!this.params) {
-      this.setErrorResponse(new errors.ParamsError())
+      this.setErrorResponse(new ParamsError())
 
       return
     }
@@ -31,7 +32,7 @@ class UserCreateServiceV1 extends BaseService<IParams, IData> {
     const hashPassword = await hash.generateHash(password)
 
     if (!hashPassword) {
-      this.setErrorResponse(new errors.InternalServerError())
+      this.setErrorResponse(new InternalServerError())
 
       return
     }

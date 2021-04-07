@@ -12,12 +12,20 @@ export interface IDataSerialized {
 
 class FarmListSerializerV1 extends BaseSerializer<IData, IDataSerialized> {
   serializer(): IDataSerialized {
-    return {
-      farms: this.data.farms.map((farm) => {
-        const farmSerializerV1 = new FarmSerializerV1({ farm })
+    const farms: IFarm[] = []
 
-        return farmSerializerV1.serialize().farm
-      })
+    this.data.farms.forEach((farm) => {
+      const farmSerializerV1 = new FarmSerializerV1({ farm })
+
+      const dataSerialized = farmSerializerV1.serialize()
+
+      if (farmSerializerV1.isSuccess() && dataSerialized) {
+        farms.push(dataSerialized.farm)
+      }
+    })
+
+    return {
+      farms
     }
   }
 }

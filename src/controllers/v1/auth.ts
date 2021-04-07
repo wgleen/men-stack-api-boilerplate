@@ -26,7 +26,12 @@ class AuthControllerV1 extends BaseController {
     req: Express.Request,
     res: Express.Response
   ): Promise<void> {
-    this.responseSuccessHandler(res, 200, { user: res.locals.user }, UserSerializerV1)
+    this.responseSuccessHandler(
+      res,
+      200,
+      { user: res.locals.user },
+      UserSerializerV1
+    )
   }
 }
 

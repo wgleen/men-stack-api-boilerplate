@@ -2,7 +2,7 @@ import Express from 'express'
 import Http from 'http'
 import BaseMiddleware from '../base'
 import AuthAuthenticationServiceV1 from '../../services/v1/authAuthentication'
-import { UnauthorizedError } from '../../lib/errors'
+import UnauthorizedError from '../../exceptions/errors/unauthorizedError'
 import * as jwt from '../../lib/jwt'
 
 export interface IHeaders extends Http.IncomingHttpHeaders {

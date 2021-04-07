@@ -2,7 +2,8 @@ import BaseService from '../base'
 import User, { IUser } from '../../models/user'
 import * as hash from '../../lib/hash'
 import * as jwt from '../../lib/jwt'
-import * as errors from '../../lib/errors'
+import ParamsError from '../../exceptions/errors/paramsError'
+import UnauthorizedError from '../../exceptions/errors/unauthorizedError'
 
 export interface IParams {
   email: string
@@ -17,7 +18,7 @@ export interface IData {
 class AuthLoginServiceV1 extends BaseService<IParams, IData> {
   async execute(): Promise<void> {
     if (!this.params) {
-      this.setErrorResponse(new errors.ParamsError())
+      this.setErrorResponse(new ParamsError())
 
       return
     }
@@ -28,7 +29,7 @@ class AuthLoginServiceV1 extends BaseService<IParams, IData> {
       const user = await User.findOne({ email }).exec()
 
       if (!user) {
-        this.setErrorResponse(new errors.UnauthorizedError())
+        this.setErrorResponse(new UnauthorizedError())
 
         return
       }
@@ -36,7 +37,7 @@ class AuthLoginServiceV1 extends BaseService<IParams, IData> {
       const match = await hash.compareHash(password, user.password)
 
       if (!match) {
-        this.setErrorResponse(new errors.UnauthorizedError())
+        this.setErrorResponse(new UnauthorizedError())
 
         return
       }

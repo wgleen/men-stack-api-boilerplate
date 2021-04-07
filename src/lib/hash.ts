@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt'
-import * as errors from './errors'
+import InternalServerError from '../exceptions/errors/internalServerError'
 
 const SALT_ROUNDS = 10
 
 export const generateHash = async (plaintext: string): Promise<string> => {
   if (!plaintext) {
-    throw new errors.InternalServerError()
+    throw new InternalServerError()
   }
 
   const hash = await bcrypt.hash(plaintext, SALT_ROUNDS)
